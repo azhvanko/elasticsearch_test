@@ -1,0 +1,10 @@
+- hosts:
+  - http://elasticsearch_master_node:9200
+  - http://elasticsearch_data_node_1:9200
+  - http://elasticsearch_data_node_2:9200
+  module: elasticsearch
+  period: 10s
+  username: remote_monitoring_user
+  password: password
+  xpack:
+    enabled: true

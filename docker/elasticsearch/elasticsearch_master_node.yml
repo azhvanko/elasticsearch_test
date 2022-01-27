@@ -1,0 +1,38 @@
+################################### Cluster ###################################
+cluster:
+  name: catalog
+  initial_master_nodes: master_node
+discovery:
+  seed_hosts:
+    - elasticsearch_data_node_1
+    - elasticsearch_data_node_2
+xpack:
+  security:
+    enabled: true
+    transport:
+      ssl:
+        enabled: true
+        verification_mode: certificate
+        client_authentication: required
+        keystore:
+          path: elastic-stack-ca.p12
+        truststore:
+          path: elastic-stack-ca.p12
+
+#################################### Node #####################################
+node:
+  name: master_node
+  roles: [master, ingest]
+
+################################### Memory ####################################
+bootstrap:
+  memory_lock: true
+
+############################## Network And HTTP ###############################
+network:
+  host: 0.0.0.0
+http:
+  port: 9200
+  compression: true
+transport:
+  port: 9300

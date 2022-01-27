@@ -1,0 +1,114 @@
+version: '3.7'
+
+services:
+  elasticsearch_master_node:
+    build:
+      context: .
+      dockerfile: ./docker/elasticsearch/Dockerfile
+    image: catalog_elasticsearch_master_node:latest
+    container_name: catalog_elasticsearch_master_node
+    restart: on-failure
+    environment:
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+    ulimits:
+      memlock:
+        hard: -1
+        soft: -1
+      nofile:
+        hard: 65535
+        soft: 65535
+      nproc: 65535
+    volumes:
+      - elasticsearch_master_node_data:/usr/share/elasticsearch/data
+      - ./docker/elasticsearch/elasticsearch_master_node.yml:/usr/share/elasticsearch/config/elasticsearch.yml
+      - ./docker/elasticsearch/elastic-stack-test-ca.p12:/usr/share/elasticsearch/config/elastic-stack-ca.p12
+    ports:
+      - "127.0.0.1:9200:9200"
+  elasticsearch_data_node_1:
+    build:
+      context: .
+      dockerfile: ./docker/elasticsearch/Dockerfile
+    image: catalog_elasticsearch_data_node_1:latest
+    container_name: catalog_elasticsearch_data_node_1
+    restart: on-failure
+    depends_on:
+      - elasticsearch_master_node
+    environment:
+      - "ES_JAVA_OPTS=-Xms1024m -Xmx1024m"
+    ulimits:
+      memlock:
+        hard: -1
+        soft: -1
+      nofile:
+        hard: 65535
+        soft: 65535
+      nproc: 65535
+    volumes:
+      - elasticsearch_data_node_1_data:/usr/share/elasticsearch/data
+      - ./docker/elasticsearch/elasticsearch_data_node_1.yml:/usr/share/elasticsearch/config/elasticsearch.yml
+      - ./docker/elasticsearch/elastic-stack-test-ca.p12:/usr/share/elasticsearch/config/elastic-stack-ca.p12
+    ports:
+      - "127.0.0.1:9201:9200"
+  elasticsearch_data_node_2:
+    build:
+      context: .
+      dockerfile: ./docker/elasticsearch/Dockerfile
+    image: catalog_elasticsearch_data_node_2:latest
+    container_name: catalog_elasticsearch_data_node_2
+    restart: on-failure
+    depends_on:
+      - elasticsearch_master_node
+    environment:
+      - "ES_JAVA_OPTS=-Xms1024m -Xmx1024m"
+    ulimits:
+      memlock:
+        hard: -1
+        soft: -1
+      nofile:
+        hard: 65535
+        soft: 65535
+      nproc: 65535
+    volumes:
+      - elasticsearch_data_node_2_data:/usr/share/elasticsearch/data
+      - ./docker/elasticsearch/elasticsearch_data_node_2.yml:/usr/share/elasticsearch/config/elasticsearch.yml
+      - ./docker/elasticsearch/elastic-stack-test-ca.p12:/usr/share/elasticsearch/config/elastic-stack-ca.p12
+    ports:
+      - "127.0.0.1:9202:9200"
+  kibana:
+    build:
+      context: .
+      dockerfile: ./docker/kibana/Dockerfile
+    image: catalog_kibana:latest
+    container_name: catalog_kibana
+    restart: on-failure
+    volumes:
+      - ./docker/kibana/kibana.yml:/usr/share/kibana/config/kibana.yml
+    ports:
+      - "127.0.0.1:5601:5601"
+    depends_on:
+      - elasticsearch_master_node
+      - elasticsearch_data_node_1
+      - elasticsearch_data_node_2
+  metricbeat:
+    build:
+      context: .
+      dockerfile: ./docker/metricbeat/Dockerfile
+    image: catalog_metricbeat:latest
+    container_name: catalog_metricbeat
+    restart: on-failure
+    depends_on:
+      - elasticsearch_master_node
+      - elasticsearch_data_node_1
+      - elasticsearch_data_node_2
+    volumes:
+      - ./docker/metricbeat/metricbeat.yml:/usr/share/metricbeat/metricbeat.yml
+      - ./docker/metricbeat/modules/:/usr/share/metricbeat/modules.d/
+
+
+volumes:
+  elasticsearch_master_node_data:
+    driver: local
+  elasticsearch_data_node_1_data:
+    driver: local
+  elasticsearch_data_node_2_data:
+    driver: local

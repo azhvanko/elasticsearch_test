@@ -1,0 +1,25 @@
+server:
+  basePath: /kibana
+  host: 0.0.0.0
+  name: kibana
+  port: 5601
+  rewriteBasePath: true
+  shutdownTimeout: 5s
+
+xpack:
+  monitoring:
+    ui:
+      container:
+        elasticsearch:
+          enabled: true
+
+csp:
+  strict: true
+
+elasticsearch:
+  hosts:
+  - http://elasticsearch_master_node:9200
+  - http://elasticsearch_data_node_1:9200
+  - http://elasticsearch_data_node_2:9200
+  username: kibana_system
+  password: password
