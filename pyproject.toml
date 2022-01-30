@@ -1,0 +1,21 @@
+[tool.poetry]
+name = "elasticsearch_test"
+version = "0.1.0"
+description = ""
+authors = ["Artsiom Zhvanko <azhvanko@outlook.com>"]
+license = "MIT"
+
+[tool.poetry.dependencies]
+python = "^3.9"
+elasticsearch = "^7.16.3"
+simplejson = "^3.17.6"
+click = "^8.0.3"
+Faker = "^11.3.0"
+PyYAML = "^6.0"
+environs = "^9.4.0"
+
+[tool.poetry.dev-dependencies]
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
