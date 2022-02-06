@@ -74,6 +74,8 @@ LOGGING_CONFIG = {
 # ES cluster
 ES_MASTER_NODE_HOST: str = env.str('ES_MASTER_NODE_HOST', default='localhost')
 ES_MASTER_NODE_PORT: int = env.int('ES_MASTER_NODE_PORT', default=9200)
+ES_INGEST_NODE_HOST: str = env.str('ES_INGEST_NODE_HOST', default='localhost')
+ES_INGEST_NODE_PORT: int = env.int('ES_INGEST_NODE_PORT', default=9203)
 ES_USER: str = env.str('ES_USER')
 ES_USER_PASSWORD: str = env.str('ES_USER_PASSWORD')
 # ES index

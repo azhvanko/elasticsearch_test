@@ -6,6 +6,7 @@ discovery:
   seed_hosts:
     - elasticsearch_master_node
     - elasticsearch_data_node_2
+    - elasticsearch_ingest_node
 xpack:
   security:
     enabled: true
@@ -22,7 +23,7 @@ xpack:
 #################################### Node #####################################
 node:
   name: data_node_1
-  roles: [data, ingest]
+  roles: [data]
 
 ################################### Memory ####################################
 bootstrap:

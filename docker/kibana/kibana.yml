@@ -21,5 +21,6 @@ elasticsearch:
   - http://elasticsearch_master_node:9200
   - http://elasticsearch_data_node_1:9200
   - http://elasticsearch_data_node_2:9200
+  - http://elasticsearch_ingest_node:9200
   username: kibana_system
   password: password

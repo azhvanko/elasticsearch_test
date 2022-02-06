@@ -4,9 +4,9 @@ cluster:
   initial_master_nodes: master_node
 discovery:
   seed_hosts:
+    - elasticsearch_master_node
     - elasticsearch_data_node_1
     - elasticsearch_data_node_2
-    - elasticsearch_ingest_node
 xpack:
   security:
     enabled: true
@@ -22,8 +22,8 @@ xpack:
 
 #################################### Node #####################################
 node:
-  name: master_node
-  roles: [master, ingest]
+  name: ingest_node
+  roles: [ingest]
 
 ################################### Memory ####################################
 bootstrap:

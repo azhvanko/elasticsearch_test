@@ -14,7 +14,7 @@ ES_CREDENTIALS = ${ES_USER}:${ES_USER_PASSWORD}
 
 # docker
 up_elasticsearch:
-	docker-compose up --build elasticsearch_master_node elasticsearch_data_node_1 elasticsearch_data_node_2
+	docker-compose up --build elasticsearch_master_node elasticsearch_data_node_1 elasticsearch_data_node_2 elasticsearch_ingest_node
 
 up_monitoring:
 	docker-compose up --build metricbeat kibana
@@ -40,6 +40,7 @@ setup_passwords:
 
 setup_es_test_stand:
 	python manage.py create_es_index
+	python manage.py insert_test_data
 
 delete_es_catalog_index:
 	curl -u $(ES_CREDENTIALS) -X DELETE "$(ES_MASTER_NODE_ADDRESS)/${ES_CATALOG_INDEX_NAME}"

@@ -6,7 +6,12 @@ import yaml
 
 import app.config as c
 from app.elasticsearch.session import ElasticsearchClient
-from app.elasticsearch.utils import create_index
+from app.elasticsearch.utils import (
+    bulk,
+    CHUNK_SIZE,
+    create_index,
+    generate_random_document
+)
 from app.logging import logger
 
 
@@ -58,6 +63,9 @@ def update_configs() -> None:
         'elasticsearch_data_node_2': (
                 c.BASE_DIR / 'docker' / 'elasticsearch' / 'elasticsearch_data_node_2.yml'
         ),
+        'elasticsearch_ingest_node': (
+                c.BASE_DIR / 'docker' / 'elasticsearch' / 'elasticsearch_ingest_node.yml'
+        ),
         'kibana': (
             c.BASE_DIR / 'docker' / 'kibana' / 'kibana.yml'
         ),
@@ -66,7 +74,7 @@ def update_configs() -> None:
         ),
         'elasticsearch_xpack': (
             c.BASE_DIR / 'docker' / 'metricbeat' / 'modules' / 'elasticsearch-xpack.yml'
-        )
+        ),
     }
 
     # checks
@@ -145,3 +153,33 @@ def create_es_index(index: str) -> None:
         )
 
         logger.info(f'Index "{index}" created successfully')
+
+
+@cli.command('insert_test_data')
+@click.option('--index', type=str, default=c.ES_CATALOG_INDEX_NAME)
+@click.option(
+    '--documents_count',
+    type=int,
+    default=c.ES_CATALOG_DOCUMENTS_COUNT
+)
+def insert_test_data(index: str, documents_count: int) -> None:
+    with ElasticsearchClient(es_node_type='ingest') as es_client:
+        documents: list[dict] = list()
+        start = es_client.count(index=index)['count'] + 1
+        stop = start + documents_count
+        total_inserted = 0
+
+        for document_id in range(start, stop):
+            document = generate_random_document(document_id)
+            document['_op_type'] = 'create'
+
+            documents.append(document)
+            total_inserted += 1
+
+            if (
+                len(documents) == CHUNK_SIZE or
+                document_id == stop - 1 and documents
+            ):
+                _ = bulk(es_client, documents, index=index)
+                documents.clear()
+                logger.info(f'total inserted: {total_inserted}')

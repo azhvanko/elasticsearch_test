@@ -10,6 +10,16 @@ from app.logging import logger
 
 class ElasticsearchClient:
     _es_client: Elasticsearch = None
+    _es_node_types: dict[str, dict[str, str]] = {
+        'master': {
+            'host': c.ES_MASTER_NODE_HOST,
+            'port': c.ES_MASTER_NODE_PORT,
+        },
+        'ingest': {
+            'host': c.ES_INGEST_NODE_HOST,
+            'port': c.ES_INGEST_NODE_PORT,
+        }
+    }
     _es_host: str = None
     _es_port: str = None
     _es_user: str = None
@@ -20,10 +30,15 @@ class ElasticsearchClient:
         es_host: t.Optional[str] = None,
         es_port: t.Optional[str] = None,
         es_user: t.Optional[str] = None,
-        es_user_password: t.Optional[str] = None
+        es_user_password: t.Optional[str] = None,
+        es_node_type: str = 'master'
     ) -> None:
-        self._es_host = es_host or c.ES_MASTER_NODE_HOST
-        self._es_port = es_port or c.ES_MASTER_NODE_PORT
+        if es_host is None or es_port is None:
+            es_host = self._es_node_types[es_node_type]['host']
+            es_port = self._es_node_types[es_node_type]['port']
+
+        self._es_host = es_host
+        self._es_port = es_port
         self._es_user = es_user or c.ES_USER
         self._es_user_password = es_user_password or c.ES_USER_PASSWORD
 

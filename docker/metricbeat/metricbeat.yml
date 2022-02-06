@@ -9,8 +9,7 @@ metricbeat:
 output:
   elasticsearch:
     hosts:
-    - elasticsearch_data_node_1:9200
-    - elasticsearch_data_node_2:9200
+    - elasticsearch_ingest_node:9200
     protocol: http
     username: elastic
     password: password

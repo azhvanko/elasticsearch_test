@@ -74,6 +74,29 @@ services:
       - ./docker/elasticsearch/elastic-stack-test-ca.p12:/usr/share/elasticsearch/config/elastic-stack-ca.p12
     ports:
       - "127.0.0.1:9202:9200"
+  elasticsearch_ingest_node:
+    build:
+      context: .
+      dockerfile: ./docker/elasticsearch/Dockerfile
+    image: catalog_elasticsearch_ingest_node:latest
+    container_name: catalog_elasticsearch_ingest_node
+    restart: on-failure
+    environment:
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+    ulimits:
+      memlock:
+        hard: -1
+        soft: -1
+      nofile:
+        hard: 65535
+        soft: 65535
+      nproc: 65535
+    volumes:
+      - elasticsearch_ingest_node_data:/usr/share/elasticsearch/data
+      - ./docker/elasticsearch/elasticsearch_ingest_node.yml:/usr/share/elasticsearch/config/elasticsearch.yml
+      - ./docker/elasticsearch/elastic-stack-test-ca.p12:/usr/share/elasticsearch/config/elastic-stack-ca.p12
+    ports:
+      - "127.0.0.1:9203:9200"
   kibana:
     build:
       context: .
@@ -89,6 +112,7 @@ services:
       - elasticsearch_master_node
       - elasticsearch_data_node_1
       - elasticsearch_data_node_2
+      - elasticsearch_ingest_node
   metricbeat:
     build:
       context: .
@@ -100,6 +124,7 @@ services:
       - elasticsearch_master_node
       - elasticsearch_data_node_1
       - elasticsearch_data_node_2
+      - elasticsearch_ingest_node
     volumes:
       - ./docker/metricbeat/metricbeat.yml:/usr/share/metricbeat/metricbeat.yml
       - ./docker/metricbeat/modules/:/usr/share/metricbeat/modules.d/
@@ -111,4 +136,6 @@ volumes:
   elasticsearch_data_node_1_data:
     driver: local
   elasticsearch_data_node_2_data:
+    driver: local
+  elasticsearch_ingest_node_data:
     driver: local
