@@ -1,1 +1,1 @@
-FROM docker.elastic.co/beats/metricbeat:7.16.3
+FROM docker.elastic.co/beats/metricbeat:7.17.0
