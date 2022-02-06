@@ -45,7 +45,7 @@ requests = ["requests (>=2.4.0,<3.0.0)"]
 
 [[package]]
 name = "environs"
-version = "9.4.0"
+version = "9.5.0"
 description = "simplified environment variable parsing"
 category = "main"
 optional = false
@@ -63,7 +63,7 @@ tests = ["pytest", "dj-database-url", "dj-email-url", "django-cache-url"]
 
 [[package]]
 name = "faker"
-version = "11.3.0"
+version = "11.4.0"
 description = "Faker is a Python package that generates fake data for you."
 category = "main"
 optional = false
@@ -177,12 +177,12 @@ elasticsearch = [
     {file = "elasticsearch-7.17.0.tar.gz", hash = "sha256:406013783cc36af28ea36cd58cf184cd646530e47eea41336b386322fb878b59"},
 ]
 environs = [
-    {file = "environs-9.4.0-py2.py3-none-any.whl", hash = "sha256:b5a197f70c590e8ad2d60d145ea2a2e90d4b1b05cdd04f8e18132d2760123971"},
-    {file = "environs-9.4.0.tar.gz", hash = "sha256:b1cb81fbc0568d85c8ca32328e17bd756a2bb16cff54371d18d15d1832b692aa"},
+    {file = "environs-9.5.0-py2.py3-none-any.whl", hash = "sha256:1e549569a3de49c05f856f40bce86979e7d5ffbbc4398e7f338574c220189124"},
+    {file = "environs-9.5.0.tar.gz", hash = "sha256:a76307b36fbe856bdca7ee9161e6c466fd7fcffc297109a118c59b54e27e30c9"},
 ]
 faker = [
-    {file = "Faker-11.3.0-py3-none-any.whl", hash = "sha256:61f97034cea252b8426d81810afab2f3c27b584f2b4313400a0cc83a9b013ded"},
-    {file = "Faker-11.3.0.tar.gz", hash = "sha256:adbe567e64da6a1097feacab699000e1ad16e17a6592a8f0ae1ee0b7fbf19887"},
+    {file = "Faker-11.4.0-py3-none-any.whl", hash = "sha256:c9e8557368706a094b5caf52113dd21412f8c9f06fcf00acd08dacb1cf014ed4"},
+    {file = "Faker-11.4.0.tar.gz", hash = "sha256:b548a1f48f6d95b6ce57b0523c78c6cfd48fdb786267e448403f242c2678c4c8"},
 ]
 marshmallow = [
     {file = "marshmallow-3.14.1-py3-none-any.whl", hash = "sha256:04438610bc6dadbdddb22a4a55bcc7f6f8099e69580b2e67f5a681933a1f4400"},
