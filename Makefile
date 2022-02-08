@@ -53,3 +53,11 @@ es_catalog_index_stat:
 
 es_list_indices:
 	curl -u $(ES_CREDENTIALS) -X GET "$(ES_MASTER_NODE_ADDRESS)/_cat/indices?pretty"
+
+start_random_search:
+	# search
+	python manage.py start_random_search
+
+start_random_operations:
+	# insert/update/delete
+	python manage.py start_random_operations
